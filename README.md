@@ -30,6 +30,9 @@ fred.name = "Brick"
 fred.weight = 999.2
 fred.homePlanet = "Mars"
 ```
+```
+The value of the homePlanet attribute is a constant.  Change 'let' to 'var'. 
+```
 
 Fix the class definition for `Giant` in the space below so that it **does** work:
 
