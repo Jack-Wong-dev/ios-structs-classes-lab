@@ -31,11 +31,31 @@ fred.weight = 999.2
 fred.homePlanet = "Mars"
 ```
 ```
-The value of the homePlanet attribute is a constant.  Change 'let' to 'var'. 
+Answer Q1:
+The value of the homePlanet property is a constant.  Change 'let' to 'var'.
 ```
 
 Fix the class definition for `Giant` in the space below so that it **does** work:
 
+```swift
+class Giant {
+    var name: String
+    var weight: Double
+    var homePlanet: String
+
+    init(name: String, weight: Double, homePlanet: String) {
+        self.name = name
+        self.weight = weight
+        self.homePlanet = homePlanet
+    }
+}
+
+let fred = Giant(name: "Fred", weight: 340.0, homePlanet: "Earth")
+
+fred.name = "Brick"
+fred.weight = 999.2
+fred.homePlanet = "Mars"
+```
 
 ## Question 2
 
@@ -57,9 +77,25 @@ bilbo.name = "Jake"
 bilbo.height = 1.42
 bilbo.homePlanet = "Saturn"
 ```
+```
+Answer Q2:
+The object bilbo is a constant.  Therefore, all property values cannot be changed
+```
 
 Change the declaration of `bilbo` so that the above three lines of code **do** work:
 
+```swift
+struct Alien {
+    var name: String
+    var height: Double
+    var homePlanet: String
+}
+var bilbo = Alien(name: "Bilbo", height: 1.67, homePlanet: "Venus")  
+
+bilbo.name = "Jake"
+bilbo.height = 1.42
+bilbo.homePlanet = "Saturn"
+```
 
 ## Question 3
 
@@ -73,6 +109,11 @@ jason.name = "Jason"
 
 What will the value of `edgar.name` be after those three lines of code are run? What will the value of `jason.name` be? Why?
 
+```
+Answer Q3:
+The value of jason.name will be "Jason".  This is because classes are reference type.  Both the instances 'edgar' and 'jason' point to the same memory location.
+Hence the value in the located in the same memory location changes.
+```
 
 ## Question 4
 
@@ -86,7 +127,10 @@ charlesFromJupiter.homePlanet = "Jupiter"
 
 What will the value of `charles.homePlanet` be after the above code run? What about the value of `charlesFromJupiter.homePlanet`? Why?
 
-
+```
+Answer 4:
+The value of charles.homePlanet is 'Pluto' and the value of charlesFromJupiter.homePlanet is 'Jupiter'.  This is because Alien is a struct, meaning we are dealing with value types. Hence, charlesFromJupiter is an object separate from charles.  
+```
 ## Question 5
 
 Here's a struct that represents a bank account:
@@ -110,6 +154,20 @@ Does this code work? Why or why not?
 
 Fix the `BankAccount` struct so it does work.
 
+```swift
+struct BankAccount {
+    var owner: String
+    var balance: Double
+
+    mutating func deposit(_ amount: Double) {
+        balance += amount
+    }
+
+    mutating func withdraw(_ amount: Double) {
+        balance -= amount
+    }
+}
+```
 Given the code below (which should incorporate any fixes you made):
 
 ```swift
@@ -120,21 +178,88 @@ joeAccount.withdraw(50.0)
 
 What will the value of `joeAccount.balance` be after the above code runs? What about the value of `joeOtherAccount.balance`? Why?
 
+```
+Answer Q5:
+The value of joeAccount.balance is 50.0 whereas the value joeOtherAccount remains the same (100.0).  Originally the object joeAccount was created with joeOtherAccount's property values.  However, because we dealing with value types, any changes made to the property of one object will not impact the property of the other object.
+```
+
 
 ## Question 6
 
 a. Write a struct called `Person` that has 3 properties of type `String`: a first name, a last name and a middle name. Have the middle name be optional. Create 2 instances of a `Person`, one with a middle name and one without. Print one of their first names.
 
+```swift
+//Solution Q6A
+struct Person{
+    var firstName: String
+    var lastName: String
+    var middleName: String?
+}
+
+var Jack = Person(firstName: "Jack", lastName: "Wong", middleName: nil)
+var Obama = Person(firstName: "Barack", lastName: "Obama", middleName: "Hussain")
+
+print(Jack.firstName)
+```
 
 b. Write a method in `Person` called `fullName` that will return a formatted string of an instance's full name. Call this method on both the instances you created in part a.
 
+```swift
+//Solution Q6B
+struct Person{
+    var firstName: String
+    var lastName: String
+    var middleName: String?
+
+    func fullName() -> String {
+        if let m = middleName{
+            return "\(firstName) \(m) \(lastName)"
+        }else{
+            return "\(firstName) \(lastName)"
+        }
+    }
+}
+
+var Jack = Person(firstName: "Jack", lastName: "Wong", middleName: nil)
+var Obama = Person(firstName: "Barack", lastName: "Obama", middleName: "Hussain")
+
+//print(Jack.firstName)
+print(Obama.fullName())
+print(Jack.fullName())
+```
 
 ## Question 7
 
 a. Create a class called `Book` that has properties `title`, `author` and `rating`, of type `String`, `String`, and `Double` respectively. Don't forget the initializer. Create some instances of `Book`.
 
-
 b. Add a method to `Book` called `isGood` that returns `true` if its rating is greater than or equal to 7
+
+```swift
+//Solution 7A and 7B
+class Book{
+    var title:String
+    var author:String
+    var rating:Double
+
+    init(t:String, a:String, r:Double) {
+        title = t
+        author = a
+        rating = r
+    }
+
+    func isGood() -> Bool{
+        if rating > 7.0{
+            return true
+        }else{
+            return false
+        }
+
+    }
+}
+
+var GoT1 = Book(t: "A Game of Thrones", a: "George R.R. Martin", r: 10.0)
+print(GoT1.isGood())
+```
 
 
 ## Question 8
@@ -156,6 +281,15 @@ dog1.breed //returns "unknown"
 dog1.mood //returns "calm"
 dog1.hungry //returns false
 ```
+```swift
+//Solution 8A
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+}
+```
 
 b. Add an `init` method so that you can initialize new dogs with values for name, breed, mood, and hungry. It should still have the same default values for these properties
 
@@ -165,6 +299,23 @@ dog2.name //returns "Oreo"
 dog2.breed //returns "English Setter"
 dog2.mood //returns 'excited'
 dog2.hungry //returns true
+```
+
+```swift
+//Solution 8B
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+
+    init(name:String, breed:String, mood:String, hungry:Bool) {
+        self.name = name
+        self.breed = breed
+        self.mood = mood
+        self.hungry = hungry
+    }
+}
 ```
 
 c. Add an instance method called `playFetch()`. It should set the dog's `hungry` property to `true`, set its mood property to `playful`, and print "Ruff!"
@@ -177,6 +328,28 @@ dog3.playFetch() //prints "Ruff!"
 dog3.hungry //returns true
 dog3.mood //returns "playful"
 ```
+```swift
+//Solution 8C
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+
+    init(name:String, breed:String, mood:String, hungry:Bool) {
+        self.name = name
+        self.breed = breed
+        self.mood = mood
+        self.hungry = hungry
+    }
+
+    func playFetch() {
+        hungry = true
+        mood = "playful"
+        print("Ruff")
+    }
+}
+```
 
 d. Add an instance method called `feed()`. If the dog is hungry, it should set `hungry` to `false` and print "Woof!" If the dog is not hungry, it should print "The dog doesn't look hungry"
 
@@ -185,6 +358,38 @@ var dog4 = Dog(name: "Partner", breed: "Golden Retriever", mood: "thoughtful", h
 dog4.hungry //returns true
 dog4.feed() //prints "Woof!"
 dog4.hungry //returns false
+```
+
+```swift
+//Solution 8D
+
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+
+    init(name:String, breed:String, mood:String, hungry:Bool) {
+        self.name = name
+        self.breed = breed
+        self.mood = mood
+        self.hungry = hungry
+    }
+
+    func playFetch() {
+        hungry = true
+        mood = "playful"
+        print("Ruff")
+    }
+    func feed(){
+        if hungry == true {
+            hungry = false
+            print("Woof!")
+        }else{
+            print("The dog doesn't look hungry")
+        }
+    }
+}
 ```
 
 e. Add an instance method called `toString` that returns a `String` type description of the dog:
@@ -198,10 +403,96 @@ print(dog5.toString())
 //Mood: feeling pawesome
 ```
 
+```swift
+//Solution 8E
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+
+    init(name:String, breed:String, mood:String, hungry:Bool) {
+        self.name = name
+        self.breed = breed
+        self.mood = mood
+        self.hungry = hungry
+    }
+
+    func playFetch() {
+        hungry = true
+        mood = "playful"
+        print("Ruff")
+    }
+    func feed(){
+        if hungry == true {
+            hungry = false
+            print("Woof!")
+        }else{
+            print("The dog doesn't look hungry")
+        }
+    }
+    func toString() -> String{
+        return """
+        Name: \(name)
+        Breed: \(breed)
+        Mood: \(mood)
+        """
+    }
+}
+```
+
 f. Add a type property called `count` that keeps track of how many dogs have been created so far.
 
 //Ex: There have been five dogs created so far
 `Dog.count //returns 5`
+
+```swift
+//Solution
+
+class Dog {
+    var name: String = "dog"
+    var breed: String = "unknown"
+    var mood: String = "calm"
+    var hungry: Bool = false
+    static var count = 0
+
+    init(name:String, breed:String, mood:String, hungry:Bool) {
+        self.name = name
+        self.breed = breed
+        self.mood = mood
+        self.hungry = hungry
+        Dog.count += 1
+    }
+
+    func playFetch() {
+        hungry = true
+        mood = "playful"
+        print("Ruff")
+    }
+    func feed(){
+        if hungry == true {
+            hungry = false
+            print("Woof!")
+        }else{
+            print("The dog doesn't look hungry")
+        }
+    }
+    func toString() -> String{
+        return """
+        Name: \(name)
+        Breed: \(breed)
+        Mood: \(mood)
+        """
+    }
+}
+var dog1 = Dog(name: "Toast", breed: "Corgi", mood: "Happy", hungry: true   )
+var dog2 = Dog(name: "Doug", breed: "Golden Retriever", mood: "Excited", hungry: true)
+var dog3 = Dog(name: "Snowball", breed: "Malamute", mood: "Happy", hungry: false)
+var dog4 = Dog(name: "Big Boi", breed: "Husky", mood: "Sleepy", hungry: false)
+var dog5 = Dog(name: "Small Boi", breed: "Pomsky", mood: "Restless", hungry: true)
+
+print(Dog.count) //returns 5
+```
 
 
 ## Question 9
@@ -212,8 +503,18 @@ C = (F - 32) / 1.8
 F = 1.8 * C + 32
 K = C + 273
 
-a. Make a struct called `FreezingPoint` that has three properties: `celsius`, `fahrenheit`, and `kelvin`. Give them all default values equal to the freezing point of water.
+a. Make a struct called `FreezingPoint` that has three properties: `celsius`, `fahrenheit`, and `kelvin`. Give them all default values equal to the freezing point
+of water.
 
+```swift
+//Solution 9A
+
+struct FreezingPoint{
+    var celsius:Double = 0.0 //c
+    var fahrenheit:Double = 32 //f
+    var kelvin:Double = 273.0 //k
+}
+```
 
 b. Make a struct called `Celsius` that has three properties: `celsius`, `fahrenheit`, and `kelvin`. Give `celsius` a default value of `0.0`, and make the values of `fahrenheit` and `kelvin` correct values, converted from the `celsius` property.
 
@@ -223,8 +524,69 @@ tenDegreesCelsius.celsius //returns 10.0
 tenDegreesCelsius.kelvin //returns 283.0
 tenDegreesCelsius.fahrenheit //returns 50.0
 ```
+```swift
+//Solution 9B
+struct Celsius{
+    var celsius:Double = 0.0 //c
+    var fahrenheit:Double = 32 //f
+    var kelvin:Double = 273.0 //k
+
+//    C = (F - 32) / 1.8
+//    F = 1.8 * C + 32
+//    K = C + 273
+    init(celsius:Double) {
+        self.celsius = celsius
+        fahrenheit = 1.8 * celsius + 32
+        kelvin = celsius + 273
+    }
+    init(fahrenheit: Double) {
+        self.fahrenheit = fahrenheit
+        celsius = (fahrenheit - 32)/1.8
+        kelvin = celsius + 273
+    }
+}
+
+```
 
 c. Give the `Celsius` struct a method called `isBelowFreezing` that returns a `Bool` (true if the temperature is below freezing).
+
+```swift
+struct FreezingPoint{
+    static var celsius:Double = 0.0 //c
+    static var fahrenheit:Double = 32 //f
+    static var kelvin:Double = 273.0 //k
+}
+
+struct Celsius{
+    var celsius:Double = 0.0 //c
+    var fahrenheit:Double = 32 //f
+    var kelvin:Double = 273.0 //k
+
+    //    C = (F - 32) / 1.8
+    //    F = 1.8 * C + 32
+    //    K = C + 273
+    init(celsius:Double) {
+        self.celsius = celsius
+        fahrenheit = 1.8 * celsius + 32
+        kelvin = celsius + 273
+    }
+    init(fahrenheit: Double) {
+        self.fahrenheit = fahrenheit
+        celsius = (fahrenheit - 32)/1.8
+        kelvin = celsius + 273
+    }
+    func isBelowFreezing()->Bool{
+        if self.celsius < FreezingPoint.celsius{
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
+var c = Celsius.init(celsius: -1.0)
+print(c.isBelowFreezing()) //true
+```
 
 
 ## Question 10
@@ -241,7 +603,29 @@ let colorDictArray: [[String: Double]] = [["red": 1.0, "green": 0.0, "blue": 0.0
  ["red": 0.2, "green": 0.2, "blue": 0.5],
  ["red": 0.5, "green": 0.1, "blue": 0.9],]
 ```
+```swift
+struct RGBColor{
+    var red, green, blue: Double
 
+}
+
+let colorDictArray: [[String: Double]] = [["red": 1.0, "green": 0.0, "blue": 0.0],
+                                          ["red": 0.0, "green": 1.0, "blue": 0.0],
+                                          ["red": 0.0, "green": 0.0, "blue": 1.0],
+                                          ["red": 0.6, "green": 0.9, "blue": 0.0],
+                                          ["red": 0.2, "green": 0.2, "blue": 0.5],
+                                          ["red": 0.5, "green": 0.1, "blue": 0.9],]
+
+var arrayOfRGBColor = [RGBColor]()
+
+for i in colorDictArray{
+    arrayOfRGBColor.append(RGBColor(red: (i["red"])!, green: (i["green"])!, blue: (i["blue"])!))
+}
+
+for i in arrayOfRGBColor{
+    print(i.red)
+}//Prints the value of the red property for every object
+```
 
 ## Question 11
 
@@ -251,6 +635,34 @@ b. Create an instance method inside `Movie` called `blurb` that returns a format
 
 Ex: "Borat came out in 2006. It was an odd film starring Sacha Baron Cohen as a man named Borat who was visiting America from Kazakhstan."
 
+```swift
+//Solution 11A & 11B
+class Movie{
+    var name: String
+    var year: Int
+    var genre: String
+    var cast: [String]
+    var description: String
+
+    init(name:String, year: Int, genre: String, cast: [String], description: String) {
+        self.name = name
+        self.year = year
+        self.genre = genre
+        self.cast = cast
+        self.description = description
+    }
+    func blurb() -> String {
+        return "\(name) came out in \(year).  It was an odd film starring \(cast[0]) as \(description)"
+    }
+}
+
+var movie1 = Movie(name: "The Dark Knight Rises", year: 2012, genre: "Action", cast: ["Christain Bale, Anne Hathaway, Tom Hardy"], description: "I'm Batman")
+
+var borat = Movie(name: "Borat", year: 2006, genre: "Comedy", cast: ["Sacha Baron Cohen"], description: "a man named Borat who was visiting America from Kazakhstan")
+
+print(borat.blurb())
+
+```
 
 ## Question 12
 
@@ -289,6 +701,22 @@ if let yearAsString = dieHardDict["year"] as? String {
  print(yearAsString)
 } else {
  print("this didn't work")
+}
+```
+```swift
+let dieHardDict: [String: Any] = ["name": "Die Hard",
+                                  "year" : 1987,
+                                  "genre": "action",
+                                  "cast": ["Bruce Willis", "Alan Rickman"],
+                                  "description": "John Mclain saves the day!"]
+
+func makeMovie(dict: [String:Any])-> Movie?{
+    return Movie(name: (dict["name"] as? String)!, year: (dict["year"] as? Int)!, genre: (dict["genre"] as? String)!, cast: (dict["cast"] as? [String])! , description: (dict["description"] as? String)!)
+}
+
+var someMovieObject =  makeMovie(dict: dieHardDict)
+if let movieObject = someMovieObject{
+    print(movieObject.description)
 }
 ```
 
@@ -365,4 +793,13 @@ var movies: [[String:Any]] = [
  "description": "Navy S.E.A.L. sniper Chris Kyle\"s pinpoint accuracy saves countless lives on the battlefield and turns him into a legend. Back home to his wife and kids after four tours of duty, however, Chris finds that it is the war he can\"t leave behind."
  ]
 ]
+```
+```swift
+//Solution 13
+var arrayOfMovie = [Movie]()
+for i in movies{
+        makeMovie(dict: i)!
+        arrayOfMovie.append(makeMovie(dict: i)!)
+}
+print("We got \(arrayOfMovie[1].name) and \(arrayOfMovie[2].name) and \(arrayOfMovie[0].name)")
 ```
